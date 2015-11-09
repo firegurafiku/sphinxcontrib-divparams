@@ -6,6 +6,7 @@
 # Copyright (c) 2015 Pavel Kretov.
 # Provided under the terms of MIT license.
 import sys
+import os
 import re
 import bs4
 
@@ -21,14 +22,8 @@ def tweak_parameter_item(item, soup):
 
     # Create regular expressions only once.
     re_opening_paren = re.compile("^\\s*\\(")
-    re_closing_paren = re.compile("^\\s*\\) – ", re.M)
+    re_closing_paren = re.compile("^\\s*\\)\\s+–\\s+", re.M)
 
-    # Now 'item' should look like the following HTML code:
-    #     <li><strong>param</strong> (<em>type</em>) – Description ... </li>
-    #
-    # which is going to unpack into the list:
-    #     [<strong>param</strong>, ' (', <em>type</em>, ') – Description ... ']
-    #
     if len(item.contents) <= 3:
         return
 
@@ -42,36 +37,32 @@ def tweak_parameter_item(item, soup):
                   re_opening_paren.match(paren_op) and
                   re_closing_paren.match(paren_cl))
 
-    if looks_fine:
+    if not looks_fine:
         return
 
     paren_op.replace_with(": ")
     paren_cl.insert_before(soup.new_tag("br"))
-    paren_cl.replace_with(re_closing_paren.sub(paren_cl, ""))
+    paren_cl.replace_with(re_closing_paren.sub("", paren_cl))
 
 
 def tweak_html_dom(soup):
+
 
     tables = soup.find_all("table", class_=["docutils","field-list"])
     for table in tables:
         ths = table.find_all("th", class_="field-name")
         tds = table.find_all("td", class_="field-body")
 
-        #
         replacement = soup.new_tag("div", class_="inline-params")
         for th, td in zip(ths, tds):
-            print("TH=", th)
-            print("TD=", td)
 
-            #
             header = th.extract()
             header.name = "div"
-            header["class"] = "inline-params-header"
+            header["class"] = "inline-params-name"
 
-            #
             paramlist = td.extract()
             paramlist.name = "div"
-            paramlist["class"] = "inline-params-parameters"
+            paramlist["class"] = "inline-params-body"
 
             for p in paramlist.findChildren("li"):
                 tweak_parameter_item(p, soup)
@@ -79,7 +70,6 @@ def tweak_html_dom(soup):
             for p in paramlist.findChildren("p", class_=["first", "last"]):
                 tweak_parameter_item(p, soup)
 
-            #
             replacement.contents.append(header)
             replacement.contents.append(paramlist)
 
@@ -87,11 +77,25 @@ def tweak_html_dom(soup):
         table.decompose()
 
 
-if __name__ == "__main__":
-    with open(sys.argv[1]) as f:
-        soup = bs4.BeautifulSoup(f.read(), "html.parser")
+def process_build_finished(app, exception):
+    #
+    if exception is not None:
+        return
 
-    tweak_html_dom(soup)
+    target_files = []
+    for doc in app.env.found_docs:
+        target_files.append(os.path.abspath(app.builder.get_target_uri(doc)))
 
-    with open(sys.argv[1]+".mod.html",mode='w') as f:
-        f.write(soup.prettify())
+    for fn in target_files:
+        try:
+            with open(fn) as f:
+                soup = bs4.BeautifulSoup(f.read(), "html.parser")
+
+            tweak_html_dom(soup)
+
+            with open(fn, mode='w') as f:
+                f.write(soup.prettify())
+
+        except Exception as exc:
+            app.warn("exception raised during HTML tweaking: %s"
+                     % exc, location=os.path.basename(fn))
