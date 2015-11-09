@@ -4,7 +4,7 @@ from . import implementation as _impl
 
 def get_path():
     """
-    Returns path to directory where `inlineparams` extension is installed.
+    Returns path to directory where `divparams` extension is installed.
     This directory contains template files and stylesheets, and therefore must
     be added to `template` configuration variable.
 

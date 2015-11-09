@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# This file is a part of 'spinxcontrib.inlineparams' project, which is an HTML
+# This file is a part of 'spinxcontrib.divparams' project, which is an HTML
 # postprocessor to achieve parameter list flat design. See sphinx/index.rst for
 # more information.
 #
@@ -17,7 +17,7 @@ def tweak_parameter_item(item, soup):
     # to single paragraph. If so, expand <p> back to <ul><li>...</li></ul>.
     if item.name == "p":
         item.name = "li"
-        item["class"] = "inline-params-par-item"
+        item["class"] = "divparams-single-par"
         item.wrap(soup.new_tag("ul"))
 
     # Create regular expressions only once.
@@ -53,16 +53,16 @@ def tweak_html_dom(soup):
         ths = table.find_all("th", class_="field-name")
         tds = table.find_all("td", class_="field-body")
 
-        replacement = soup.new_tag("div", class_="inline-params")
+        replacement = soup.new_tag("div", class_="divparams-list")
         for th, td in zip(ths, tds):
 
             header = th.extract()
             header.name = "div"
-            header["class"] = "inline-params-name"
+            header["class"] = "divparams-name"
 
             paramlist = td.extract()
             paramlist.name = "div"
-            paramlist["class"] = "inline-params-body"
+            paramlist["class"] = "divparams-body"
 
             for p in paramlist.findChildren("li"):
                 tweak_parameter_item(p, soup)
