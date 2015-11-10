@@ -11,7 +11,7 @@ import re
 import bs4
 
 
-def tweak_parameter_item(item, soup):
+def transform_parameter_list_item(item, soup):
     # Parameter 'item' may refer to either <li> or <p class="first last"> tag.
     # The latter case means that it's the only one list item, reduced by Sphinx
     # to single paragraph. If so, expand <p> back to <ul><li>...</li></ul>.
@@ -45,9 +45,7 @@ def tweak_parameter_item(item, soup):
     paren_cl.replace_with(re_closing_paren.sub("", paren_cl))
 
 
-def tweak_html_dom(soup):
-
-
+def transform_html(soup):
     tables = soup.find_all("table", class_=["docutils","field-list"])
     for table in tables:
         ths = table.find_all("th", class_="field-name")
@@ -65,10 +63,10 @@ def tweak_html_dom(soup):
             paramlist["class"] = "divparams-body"
 
             for p in paramlist.findChildren("li"):
-                tweak_parameter_item(p, soup)
+                transform_parameter_list_item(p, soup)
 
             for p in paramlist.findChildren("p", class_=["first", "last"]):
-                tweak_parameter_item(p, soup)
+                transform_parameter_list_item(p, soup)
 
             replacement.contents.append(header)
             replacement.contents.append(paramlist)
@@ -78,7 +76,8 @@ def tweak_html_dom(soup):
 
 
 def process_build_finished(app, exception):
-    #
+
+    # Don't risk doing anything if Sphinx failed in building HTML.
     if exception is not None:
         return
 
@@ -96,7 +95,7 @@ def process_build_finished(app, exception):
             with open(fn) as f:
                 soup = bs4.BeautifulSoup(f.read(), "html.parser")
 
-            tweak_html_dom(soup)
+            transform_html(soup)
 
             with open(fn, mode='w') as f:
                 f.write(soup.prettify())
