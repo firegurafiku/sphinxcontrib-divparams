@@ -27,6 +27,6 @@ lists of extensions, templates directories, and static directories:
 See following links for more information:
 
 - **Repository:** https://github.com/firegurafiku/sphinxcontrib-divparams
-- **Documentation:** (Nowhere yet.)
+- **Documentation:** https://pythonhosted.org/sphinxcontrib.divparams/
 - **Travis-CI:** https://travis-ci.org/firegurafiku/sphinxcontrib-divparams
 - **Original SO question:** http://stackoverflow.com/questions/33296824

@@ -138,7 +138,13 @@ Contact information
 This project author is me, Pavel Kretov. It's kept in a Git repository on
 GitHub, so feel free to open an issue on its bug-tracker if you found a bug.
 
- - Repo: https://github.com/firegurafiku/contribsphinx-divparams
- - PyPI: <Unknown yet>
+ Repository:
+   https://github.com/firegurafiku/contribsphinx-divparams
+ PyPI page:
+   https://pypi.python.org/pypi/sphinxcontrib.divparams
+ Travis-CI:
+   https://travis-ci.org/firegurafiku/sphinxcontrib-divparams
+ Original SO question:
+   http://stackoverflow.com/questions/33296824
 
 This work is provided under the term of MIT license.
