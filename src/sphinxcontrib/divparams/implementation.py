@@ -5,7 +5,6 @@
 #
 # Copyright (c) 2015 Pavel Kretov.
 # Provided under the terms of MIT license.
-import sys
 import os
 import re
 import bs4
@@ -24,10 +23,12 @@ def transform_parameter_list_item(item, soup):
     re_opening_paren = re.compile("^\\s*\\(")
     re_closing_paren = re.compile("^\\s*\\)\\s+–\\s+", re.M)
 
-    if len(item.contents) <= 3:
+    if len(item.contents) < 4:
         return
 
-    strong, paren_op, em, paren_cl, *paren_rest = item.contents
+    # Python 2 doesn't support modern list unpacking, so make
+    # sure that length matches.
+    strong, paren_op, em, paren_cl = item.contents[0:4]
     looks_fine = (isinstance(strong,   bs4.Tag)    and
                   isinstance(em,       bs4.Tag)    and
                   isinstance(paren_op, str)        and
@@ -92,13 +93,14 @@ def process_build_finished(app, exception):
 
     for fn in target_files:
         try:
-            with open(fn) as f:
+            with open(fn, mode="rb") as f:
                 soup = bs4.BeautifulSoup(f.read(), "html.parser")
 
             transform_html(soup)
+            html = soup.prettify(encoding=app.config.html_output_encoding)
 
-            with open(fn, mode='w') as f:
-                f.write(soup.prettify())
+            with open(fn, mode='wb') as f:
+                f.write(html)
 
         except Exception as exc:
             app.warn("exception raised during HTML tweaking: %s"
