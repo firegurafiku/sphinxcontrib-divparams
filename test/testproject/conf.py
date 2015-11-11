@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import sys
-import os
 
 # noinspection PyPackageRequirements
 import sphinxcontrib.divparams as divparams

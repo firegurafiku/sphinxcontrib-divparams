@@ -14,7 +14,7 @@ echo "[runtest.sh] Check <table> tags"
 grep -q '<table' "$outDir/index.html"    && true
 grep -q '<table' "$outDir/excluded.html" && true
 
-echo "[runtest.sh] Check that styleseet is copied"
+echo "[runtest.sh] Check that stylesheet is copied"
 [ -f "$outDir/_static/divparams.css" ]
 
 echo "[runtest.sh] Building 'testproject' with postpocessing enabled..."
@@ -26,7 +26,7 @@ grep -q '<table' "$outDir/index.html"    || true
 grep -q '<table' "$outDir/excluded.html" && true
 
 
-echo "[runtest.sh] Check that styleseet is copied"
+echo "[runtest.sh] Check that stylesheet is copied"
 [ -f "$outDir/_static/divparams.css" ]
 
 echo "[runtest.sh] All tests passed."

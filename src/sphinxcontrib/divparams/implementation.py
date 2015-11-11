@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# This file is a part of 'spinxcontrib.divparams' project, which is an HTML
+# This file is a part of 'sphinxcontrib.divparams' project, which is an HTML
 # postprocessor to achieve parameter list flat design. See sphinx/index.rst for
 # more information.
 #
@@ -59,18 +59,18 @@ def transform_html(soup):
             header.name = "div"
             header["class"] = "divparams-name"
 
-            paramlist = td.extract()
-            paramlist.name = "div"
-            paramlist["class"] = "divparams-body"
+            param_list = td.extract()
+            param_list.name = "div"
+            param_list["class"] = "divparams-body"
 
-            for p in paramlist.findChildren("li"):
+            for p in param_list.findChildren("li"):
                 transform_parameter_list_item(p, soup)
 
-            for p in paramlist.findChildren("p", class_=["first", "last"]):
+            for p in param_list.findChildren("p", class_=["first", "last"]):
                 transform_parameter_list_item(p, soup)
 
             replacement.contents.append(header)
-            replacement.contents.append(paramlist)
+            replacement.contents.append(param_list)
 
         table.insert_before(replacement)
         table.decompose()
