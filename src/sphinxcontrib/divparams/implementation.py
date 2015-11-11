@@ -82,10 +82,18 @@ def process_build_finished(app, exception):
     if exception is not None:
         return
 
+    if not app.config.divparams_enable_postprocessing:
+        return
+
+    excludes = app.config.divparams_exclude_sources
+
     # Find all files eligible for DOM transform.
     # See also: http://stackoverflow.com/a/33640970/1447225
     target_files = []
     for doc in app.env.found_docs:
+        if doc in excludes:
+            continue
+
         target_filename = app.builder.get_target_uri(doc)
         target_filename = os.path.join(app.outdir, target_filename)
         target_filename = os.path.abspath(target_filename)

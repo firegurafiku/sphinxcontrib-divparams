@@ -27,4 +27,6 @@ def get_static_path():
 
 
 def setup(app):
+    app.add_config_value("divparams_enable_postprocessing", False, "html")
+    app.add_config_value("divparams_exclude_sources", [], "html")
     app.connect("build-finished", _impl.process_build_finished)
