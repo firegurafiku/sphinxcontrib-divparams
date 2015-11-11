@@ -132,6 +132,7 @@ extension:
   - `divparams-body`
   - `divparams-single-par`
 
+
 Contact information
 -------------------
 
@@ -146,5 +147,7 @@ GitHub, so feel free to open an issue on its bug-tracker if you found a bug.
    https://travis-ci.org/firegurafiku/sphinxcontrib-divparams
  Original SO question:
    http://stackoverflow.com/questions/33296824
+ Reddit thread:
+   https://www.reddit.com/r/Python/comments/3se07g
 
 This work is provided under the term of MIT license.

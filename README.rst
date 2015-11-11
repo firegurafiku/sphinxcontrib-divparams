@@ -31,4 +31,5 @@ a couple of nice pictures on the standalone documentation page.
 - **PyPI:**          https://pypi.python.org/pypi/sphinxcontrib.divparams
 - **Documentation:** https://pythonhosted.org/sphinxcontrib.divparams/
 - **Travis-CI:**     https://travis-ci.org/firegurafiku/sphinxcontrib-divparams
+- **Reddit thread:** https://www.reddit.com/r/Python/comments/3se07g
 - **Original SO question:** http://stackoverflow.com/questions/33296824
