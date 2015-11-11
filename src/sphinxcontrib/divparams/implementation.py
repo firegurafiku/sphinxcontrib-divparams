@@ -47,7 +47,7 @@ def transform_parameter_list_item(item, soup):
 
 
 def transform_html(soup):
-    tables = soup.find_all("table", class_=["docutils","field-list"])
+    tables = soup.find_all("table", class_=["docutils", "field-list"])
     for table in tables:
         ths = table.find_all("th", class_="field-name")
         tds = table.find_all("td", class_="field-body")
