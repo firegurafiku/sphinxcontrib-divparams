@@ -24,9 +24,11 @@ lists of extensions, templates directories, and static directories:
 
     divparams_enable_postprocessing = True
 
-See following links for more information:
+See following links for more information. There is a broader description and
+a couple of nice pictures on the standalone documentation page.
 
-- **Repository:** https://github.com/firegurafiku/sphinxcontrib-divparams
+- **Repository:**    https://github.com/firegurafiku/sphinxcontrib-divparams
+- **PyPI:**          https://pypi.python.org/pypi/sphinxcontrib.divparams
 - **Documentation:** https://pythonhosted.org/sphinxcontrib.divparams/
-- **Travis-CI:** https://travis-ci.org/firegurafiku/sphinxcontrib-divparams
+- **Travis-CI:**     https://travis-ci.org/firegurafiku/sphinxcontrib-divparams
 - **Original SO question:** http://stackoverflow.com/questions/33296824
