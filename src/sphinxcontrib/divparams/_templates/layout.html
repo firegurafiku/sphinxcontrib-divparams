@@ -1,0 +1,7 @@
+{# This file is a part of 'sphinxcontrib.divparams' package.
+   Its purpose is to add additional stylesheet to all generated HTML pages
+   in the most sane way possible.
+   See also: http://stackoverflow.com/a/23466546/1447225 #}
+
+{% extends "!layout.html" %}
+{% set css_files = css_files + ['_static/divparams.css'] %}
