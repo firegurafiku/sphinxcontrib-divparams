@@ -1,6 +1,7 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Personal: Pavel Kretov" />
+    <inspection_tool class="CssUnusedSymbol" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="ignoredErrors">
         <list>
@@ -16,6 +17,13 @@
           <option value="W292" />
           <option value="E251" />
           <option value="E112" />
+          <option value="E126" />
+          <option value="E241" />
+          <option value="E241" />
+          <option value="E241" />
+          <option value="E241" />
+          <option value="E241" />
+          <option value="E241" />
         </list>
       </option>
     </inspection_tool>
