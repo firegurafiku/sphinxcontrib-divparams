@@ -139,7 +139,7 @@ This project author is me, Pavel Kretov. It's kept in a Git repository on
 GitHub, so feel free to open an issue on its bug-tracker if you found a bug.
 
  Repository:
-   https://github.com/firegurafiku/contribsphinx-divparams
+   https://github.com/firegurafiku/sphinxcontrib-divparams
  PyPI page:
    https://pypi.python.org/pypi/sphinxcontrib.divparams
  Travis-CI:
