@@ -24,7 +24,7 @@ setup(
     author               = "Pavel Kretov",
     author_email         = "firegurafiku@gmail.com",
     license              = "MIT",
-    url                  = "https://github.com/rvlm/rvlm-paraform",
+    url                  = "https://github.com/sphinxcontrib-divparams",
     keywords             = ["helpers"],
     requires             = ["six"],
     description          = ("Converts parameter tables in HTML documentation "
