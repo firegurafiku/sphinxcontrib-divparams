@@ -8,6 +8,58 @@
 import os
 import re
 import bs4
+import six
+
+
+# Create regular expressions only once.
+_re_opening_paren = re.compile(six.u("^\\s*\\("), re.U)
+_re_closing_paren = re.compile(six.u("^\\s*\\)\\s+\u2013\\s+"), re.M | re.U)
+_re_continuation  = re.compile(six.u("^\\s*\u2013\\s+"), re.M | re.U)
+
+
+def try_transform_parameter_with_type(item, soup):
+    if len(item.contents) < 4:
+        return False
+
+    # Python 2 doesn't support modern list unpacking, so make
+    # sure that length matches.
+    strong, paren_op, em, paren_cl = item.contents[0:4]
+    looks_fine = (isinstance(strong,   bs4.Tag)             and
+                  isinstance(em,       bs4.Tag)             and
+                  isinstance(paren_op, bs4.NavigableString) and
+                  isinstance(paren_cl, bs4.NavigableString) and
+                  strong.name == "strong"                   and
+                  em.name     == "em"                       and
+                  _re_opening_paren.match(paren_op)         and
+                  _re_closing_paren.match(paren_cl))
+
+    if not looks_fine:
+        return False
+
+    paren_op.replace_with(": ")
+    paren_cl.insert_before(soup.new_tag("br"))
+    paren_cl.replace_with(_re_closing_paren.sub("", paren_cl))
+    return True
+
+
+def try_transform_parameter_without_type(item, soup):
+    if len(item.contents) < 2:
+        return False
+
+    # Python 2 doesn't support modern list unpacking, so make
+    # sure that length matches.
+    strong, cont = item.contents[0:2]
+    looks_fine = (isinstance(strong, bs4.Tag)             and
+                  isinstance(cont,   bs4.NavigableString) and
+                  strong.name == "strong"                 and
+                  _re_continuation.match(cont))
+
+    if not looks_fine:
+        return False
+
+    cont.insert_before(soup.new_tag("br"))
+    cont.replace_with(_re_continuation.sub("", cont))
+    return True
 
 
 def transform_parameter_list_item(item, soup):
@@ -19,31 +71,8 @@ def transform_parameter_list_item(item, soup):
         item["class"] = "divparams-single-par"
         item.wrap(soup.new_tag("ul"))
 
-    # Create regular expressions only once.
-    re_opening_paren = re.compile("^\\s*\\(")
-    re_closing_paren = re.compile("^\\s*\\)\\s+–\\s+", re.M)
-
-    if len(item.contents) < 4:
-        return
-
-    # Python 2 doesn't support modern list unpacking, so make
-    # sure that length matches.
-    strong, paren_op, em, paren_cl = item.contents[0:4]
-    looks_fine = (isinstance(strong,   bs4.Tag)    and
-                  isinstance(em,       bs4.Tag)    and
-                  isinstance(paren_op, str)        and
-                  isinstance(paren_cl, str)        and
-                  strong.name == "strong"          and
-                  em.name     == "em"              and
-                  re_opening_paren.match(paren_op) and
-                  re_closing_paren.match(paren_cl))
-
-    if not looks_fine:
-        return
-
-    paren_op.replace_with(": ")
-    paren_cl.insert_before(soup.new_tag("br"))
-    paren_cl.replace_with(re_closing_paren.sub("", paren_cl))
+    if not try_transform_parameter_with_type(item, soup):
+        try_transform_parameter_without_type(item, soup)
 
 
 def transform_html(soup):

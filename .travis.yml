@@ -14,7 +14,7 @@ install:
 
 script:
   - cd test
-  - sh runtest.sh
+  - ./runtest.sh
 
 before_install:
   - pip install sphinx
