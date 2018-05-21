@@ -5,8 +5,8 @@ from setuptools import setup
 
 def slurp(filename):
     """
-    Return whole file contents as string. File is searched relative to
-    directory where this `setup.py` is located.
+    Return the whole file contents as string. File is searched relative
+    to the directory where this `setup.py` is located.
     """
     with open(os.path.join(os.path.dirname(__file__), filename)) as f:
         return f.read()
